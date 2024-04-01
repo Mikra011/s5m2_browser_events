@@ -68,11 +68,13 @@ function moduleProject2() {
   })
 
   document.addEventListener('keydown', evt => {
+
     // 👉 TASK 3 - Use the arrow keys to highlight a new square 👈
     let up = evt.key === keys.up
     let down = evt.key === keys.down
     let left = evt.key === keys.left
     let right = evt.key === keys.right
+    let space = evt.key === keys.space
 
     let targeted = document.querySelector('.targeted')
 
@@ -102,8 +104,30 @@ function moduleProject2() {
     }
 
     // 👉 TASK 4 - Use the space bar to exterminate a mosquito 👈
+    else if (space) {
+      let mosquito = targeted.firstChild
 
-    // 👉 TASK 5 - End the game 👈
+      if (mosquito && mosquito.dataset.status === 'alive') {
+        mosquito.dataset.status = 'dead'
+        mosquito.parentElement.style.backgroundColor = 'red'
+      }
+
+      // 👉 TASK 5 - End the game 👈
+      let liveMosquitos = document.querySelectorAll('[data-status="alive"]')
+
+      if (!liveMosquitos.length) {
+        let elapsed = getTimeElapsed()
+        document.querySelector('p.info').textContent =
+          `Extermination completed in ${elapsed / 1000} seconds`
+
+        let restartBtn = document.createElement('button')
+        restartBtn.textContent = 'Restart'
+        restartBtn.addEventListener('click', () => {
+          location.reload()
+        })
+        document.querySelector('h2').insertAdjacentElement('beforeend', restartBtn)
+      }
+    }
   })
   // 👆 WORK WORK ABOVE THIS LINE 👆
 }
